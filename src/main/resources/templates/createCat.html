@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Categorie</title>
+<link th:replace="~{fragment :: head}"></link>
+</head>
+<body>
+<div class="container">
+	<h1 >Categorie</h1>
+	<hr/>
+	<form id="formCategoria" th:object="${categoria}"
+	  th:action="@{/categorie/create}"  method="post">
+	  	<ul>
+	      <li 
+	         th:each="err : ${#fields.allErrors()}" 
+	         th:text="${err}" class="text-danger">
+	      </li>
+  		</ul>
+	  	<div class="row">
+	  	<div class="col-8">
+		  	<label for="nome" class="form-label">Nome</label>
+	  		<input type="text" class="form-control" id="name" th:field="*{nome}" th:errorClass="is-invalid">  			
+			<div th:if="${#fields.hasErrors('nome')}" class="invalid-feedback">
+				<ul>
+				   <li th:each="err : ${#fields.errors('name')}" th:text="${err}"></li>
+				</ul>
+	  		</div>
+
+
+
+	  		<button type="submit" class="btn btn-primary">Salva</button>
+	  		<a class="btn btn-primary" th:href="@{/foto}">Annulla</a>
+	  		</div>
+
+  		</div>
+	</form>
+	</div>
+	<script th:replace="~{fragment :: script}"></script>
+</body>
+</html>

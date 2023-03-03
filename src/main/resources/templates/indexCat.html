@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Elenco Categorie</title>
+
+<link th:replace="~{fragment :: head}"></link>
+</head>
+<body>
+<div class="container">
+	<a class="btn btn-primary" th:href="@{/categorie/create}"><i class="fas fa-plus"></i>Nuova Categoria</a>
+	<table class="table">
+		<thead>
+			<tr>
+				<td>Id</td>
+				<td>Nome</td>	
+				<td></td>			
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="data : ${categorie}">
+				<td>
+				<a th:text="${data.id}" th:href="@{'categorie/'+ ${data.id}}"></a>
+				</td>
+				<td th:text="${data.nome}"></td>
+				<td>
+					<form action="#" th:action="@{'/categorie/delete/{id}'(id=${data.id})}" method="post">
+					  <button class="btn btn-primary" type="submit" id="submitButton">
+					    <i class="fas fa-trash-alt"></i>
+					  </button>
+					</form>
+					<a class="btn btn-primary px- mx-2" th:href="@{'/categorie/edit/{id}'(id=${data.id})}">Modifica</a>
+				</td>
+				
+			</tr>
+		</tbody>
+		
+		
+	</table>
+	
+	<a class="btn btn-danger" th:href="@{/foto}"></i>Torna alla Home</a>
+	</div>
+	<script th:replace="~{fragment :: script}"></script>
+</body>
+</html>

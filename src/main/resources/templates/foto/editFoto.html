@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Modifica Foto</title>
+<div th:replace="~{fragment :: head}"></div>
+</head>
+<body>
+
+	<div class="container mt-5">
+		<h1 class="text-danger">Modifica Foto</h1>
+		<hr />
+		<form id="formFoto" th:object="${foto}"
+			th:action="@{/foto/edit/{id}(id=${foto.id})}" method="post">
+			<ul>
+				<li th:each="err : ${#fields.allErrors()}" th:text="${err}"
+					class="text-danger"></li>
+			</ul>
+			<div class="row">
+				<div class="col-8">
+					<label for="titoloFoto" class="form-label">Titolo</label> <input
+						type="text" class="form-control" id="titoloFoto" th:field="*{titoloFoto}">
+						<label for="descrizione" class="form-label">Descrizione</label> <input
+						type="text" class="form-control" id="descrizione" th:field="*{descrizione}">
+					<label for="tag" class="form-label">Inserisci Tag</label> <input
+						type="text" class="form-control" id="tag" th:field="*{tag}">
+					<label for="url" class="form-label">Foto URL</label> <input
+						type="url" class="form-control" id="url" th:field="*{url}">
+						<label >Visibile:</label>
+						<div>
+							<input  type="radio" name="visibie" th:field="*{visibile}" value="1"/><label>Visibile</label>
+							<input  type="radio" name="visibile" th:field="*{visibile}" value="0"/><label>Non visibile</label>
+						</div>
+						
+				<h3>Categorie:</h3>
+	  			<div th:each="categoria : ${categorie}" class="form-check">
+	  				<input type="checkbox" class="form-check-input" 
+	  					th:value="${categoria.id}" th:field="*{categorie}"
+	  					th:id="|categoria_${categoria.id}">
+	  				<label class="form-check-label" 
+	  				th:text="${categoria.nome}" th:for="|categoria_${categoria.id}"></label>
+	  			</div>
+					<button type="submit" class="btn btn-danger mt-5">Salva</button>
+					<a class="btn btn-primary mt-5 " th:href="@{/foto}">Annulla</a>
+				</div>
+				
+			</div>
+		</form>
+
+	</div>
+
+	<div th:replace="~{fragment :: script}"></div>
+</body>
+</html>
