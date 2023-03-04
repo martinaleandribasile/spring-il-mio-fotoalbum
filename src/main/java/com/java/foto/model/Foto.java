@@ -5,7 +5,7 @@ import java.util.List;
 
 
 
-import jakarta.persistence.CascadeType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,7 +13,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import jakarta.validation.constraints.NotEmpty;
@@ -40,16 +39,19 @@ public class Foto {
 	@Size(min=3, max=1000, message="la descrizione deve avere tra i 3 e i 100 caratteri")
 	@Column(columnDefinition = "TEXT")
 	private String descrizione;
-	@NotNull(message="descrizione: campo obbligatorio")
-	@NotEmpty(message = "descrizione: campo obbligatorio")
+	@NotNull(message="URL: campo obbligatorio")
+	@NotEmpty(message = "URL: campo obbligatorio")
 	@Column(columnDefinition = "TEXT")
 	private String url;
 	boolean visible;
+	@NotNull(message="Tag: campo obbligatorio")
+	@NotEmpty(message = "Tag: campo obbligatorio")
+	@Size(min=3, max=50, message="il Tag deve avere tra i 3 e i 50 caratteri")
+//	@Column(columnDefinition = "CHAR(100)")
+	private String tag;
 	@ManyToMany()
 	@JoinTable(name = "foto_categoria")
 	private List<Categoria> categoria;
-	@OneToMany(mappedBy = "foto",cascade = CascadeType.REMOVE)
-	private List<Tag> tag;
 	public Integer getId() {
 		return id;
 	}
@@ -86,10 +88,11 @@ public class Foto {
 	public void setCategoria(List<Categoria> categoria) {
 		this.categoria = categoria;
 	}
-	public List<Tag> getTag() {
+	public String getTag() {
 		return tag;
 	}
-	public void setTag(List<Tag> tag) {
+	public void setTag(String tag) {
 		this.tag = tag;
 	}
+	
 }

@@ -3,29 +3,33 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<div th:replace="~{fragment :: head}"></div>
+<div th:replace="~{fragments :: head}"></div>
 </head>
 <body>
-	
-	
-		<div th:each=" data : ${detail}">
-			<h3 th:text="${data.descrizione}" class="text-uppercase"></h3>
-			
-			<a class="btn btn-success"
-					th:text="Homepage" th:href="@{/foto}"></a> 
-			
-			
-		</div>
+	<div class="container-fluid d-flex flex-column align-items-center">
+		<div class="card" style="width: 18rem;">
+		  <img th:src="${foto.getUrl()}" class="card-img-top" alt="...">
+		  <div class="card-body">
+		    <h5 class="card-title" th:text="${foto.getTitolo()}"></h5>
+		    <p class="card-body" th:text="${foto.getDescrizione()}"></p>
+		    <h5 class="card-title">Visibilita' :</h5>
+		    <p class="card-body" th:text="${foto.isVisible()? 'Visibile' : 'Non Visibile'}"></p>
+		    <h5 class="card-title">Tag</h5>
+		    <p class="card-body" th:text="${foto.getTag()}"></p>
+		    <h5 class="card-title">Categorie</h5>
+		    <ul th:if="${foto.categoria.size>0}">
+				<li th:each="cat : ${foto.categoria}" th:text="${cat.getCategoria()}"></li>
+			</ul>
+		    <div class="d-flex gap-3">
+				<a  th:href="@{editFoto/{id}(id=${foto.getId()})}"class="btn btn-warning">Modifica</a>
+				<form  th:action="@{/foto/deleteFoto/{id}(id=${foto.getId()})}" method="post" >
+					<button class="btn btn-danger" type="submit" id="submitButton">Cancella</button>
+				</form>
+			</div>
+		  </div>
+	</div>
+	<a class="btn btn-success mt-4" th:text="Homepage" th:href="@{/foto}"></a> 
+	</div>
 		
-		<h1>Categoria:</h1>
-				<div th:each=" categoria : ${detail.categorie}" >
-					<h3 th:text="${categoria.nome}" ></h3>
-				
-				</div>
-			
-		
-	
-
-	<div th:replace="~{fragment :: script}"></div>
 </body>
 </html>
