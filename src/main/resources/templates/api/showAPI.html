@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css"
+        integrity="sha512-SbiR/eusphKoMVVXysTKG/7VseWii+Y3FdHrt0EpKgpToZeemhqHeZeLWLhJutz/2ut2Vw1uQEj2MbRF+TVBUA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+</head>
+
+<body>
+    <div th:replace="~{fragments :: header}"></div>
+
+    <div class="container-fluid my-5 ">
+        <h1>Dettaglio foto</h1>
+        <div id="dettaglio"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"
+        integrity="sha512-1/RvZTcCDEUjY/CypiMz+iqqtaoQfAITmNSJY17Myp4Ms5mdxPS5UV7iOfdZoxcGhzFbOm6sntTKJppjvuhg4g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+		console.log("Show: JS OK!");
+
+const urlParams = new URLSearchParams(window.location.search);
+const id = parseInt(urlParams.get('id'));
+
+dettaglio(id);
+
+
+function dettaglio(id) {
+  axios.get(`http://localhost:8080/api/foto/${id}`)
+    .then((res) => {
+      const foto = res.data;
+      const photoContainer = document.querySelector('#dettaglio');
+
+      const photoCard = `
+      <div class="card">
+        <img src="${foto.url}" class="card-img-top" alt="${foto.titolo}">
+        <div class="card-body">
+          <h5 class="card-title">${foto.titolo}</h5>
+          <p class="card-text">${foto.descrizione}</p>
+          <p class="card-text text-primary">Tag: ${foto.tag}</p>
+          <div>
+            <a href="indexAPI.html" class="btn btn-outline-dark">Torna alla lista</a>
+          </div>
+        </div>
+      </div>
+    `;
+      photoContainer.insertAdjacentHTML('beforeend', photoCard);
+    })
+    .catch((err) => {
+      console.error('Errore nella richiesta', err);
+      alert('Errore durante la richiesta!');
+    });
+}
+
+	</script>
+</body>
+
+</html>

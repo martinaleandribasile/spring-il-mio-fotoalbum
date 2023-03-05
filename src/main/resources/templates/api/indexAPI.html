@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Photo Gallery</title>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css"
+	integrity="sha512-SbiR/eusphKoMVVXysTKG/7VseWii+Y3FdHrt0EpKgpToZeemhqHeZeLWLhJutz/2ut2Vw1uQEj2MbRF+TVBUA=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+</head>
+
+<body>
+
+	<div th:replace="~{fragments :: header}"></div>
+
+	<div class="container mt-5 pt-4">
+		<h1 class="mb-4 text-center">Scatti imperdibili</h1>
+		<div class="">
+			<div class="">
+				<input type="text" id="input" class="form-control mb-4"
+					placeholder="Ricerca la foto -> titolo o tag" >
+			</div>
+		</div>
+		<div class="d-flex justify-content-evenly flex-wrap" id="foto"></div>
+	</div>
+
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"
+		integrity="sha512-1/RvZTcCDEUjY/CypiMz+iqqtaoQfAITmNSJY17Myp4Ms5mdxPS5UV7iOfdZoxcGhzFbOm6sntTKJppjvuhg4g=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script>
+console.log("Index: JS OK!");
+
+photoList();
+
+function photoList() {
+  axios.get('http://localhost:8080/api/foto')
+    .then((res) => {
+      const photoListContainer = document.querySelector('#foto');
+      res.data.forEach(photo => {
+        const photoCard = `
+            <div class="mb-4 ">
+              <div class="card p-5 fotobox">
+                  <img src="${photo.url}" class="card-img-top" alt="${photo.title}">
+                </a>
+                <div class="card-body">
+                  <h5 class="card-title text-success">
+                    ${photo.titolo}
+                  </h5>
+                  <p class="card-text">${photo.descrizione}</p>
+                  <p class="card-text tag text-primary">Tag: <h6 class="text-black" >${photo.tag}</p>
+                </div>
+                <div class="p-3">
+                  <a href="showAPI.html?id=${photo.id}" class="btn btn-outline-success">Dettagli</a>
+                </div>
+              </div>
+            </div>
+          `;
+        photoListContainer.insertAdjacentHTML('beforeend', photoCard);
+      });
+    })
+    .catch((err) => {
+      console.error('errore nella richiesta', err);
+      alert('Errore durante la richiesta!');
+    });
+}
+
+function ricerca() {
+	console.log('ricerca')
+  const filter = input.value.toLowerCase();
+  console.log(filter)
+  const photoListContainer = document.querySelector('#foto');
+  const photos = photoListContainer.querySelectorAll(".fotobox");
+
+  photos.forEach((photo) => {
+    const name = photo.querySelector('.card-title ').textContent.toLowerCase();
+    const tag = photo.querySelector('.tag').textContent.toLowerCase();
+
+    if (name.includes(filter) || tag.includes(filter)) {
+      photo.classList.remove('nascondi');
+    } else {
+      photo.classList.add('nascondi');
+    }
+  });
+}
+
+document.querySelector('#input').addEventListener('input', () => {
+  ricerca();
+});
+	</script>
+</body>
+
+</html>
+<style>
+	.nascondi{
+		display: none;
+	}
+</style>

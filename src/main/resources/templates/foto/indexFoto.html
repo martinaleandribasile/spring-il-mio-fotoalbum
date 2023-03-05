@@ -2,25 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <div th:replace="~{fragments :: head}"></div>
-<title>Pizze</title>
+<title>Foto</title>
 </head>
 <body style="position: relative;">
-	
-	<div th:if="${elencoFoto.size()>0}">
-		<form th:if="${ricerca}==false" action="/foto" style="column-gap: 10px;" class="mainForm">
-			<div >
-				
-				<input type="text" name="keyword" />
-				<input type="submit" value="Ricerca" class="btn btn-success" />
-			</div>
-		</form>
-		<form th:if="${ricerca}" action="/foto" style="column-gap: 10px;" class="mainForm">
-					<div >
-						<input type="text" name="" class="d-none"/>
-						<input type="submit" value="View All" class="btn btn-warning" />
-					</div>
-		</form>
-	</div>
 	<div class="d-flex gap-4 flex-wrap mt-5 justify-content-evenly">
 		<div th:each="foto : ${elencoFoto}"  class="card" style="width: 18rem;">
 		  <img th:src="${foto.getUrl()}" class="card-img-top" alt="...">
@@ -30,7 +14,8 @@
 		  </div>
 		</div>
 	</div>
-	<a class="btn btn-success" th:href="@{'/foto/newFoto'}" style="width: 10%;">Inserisci Nuova Foto</a></div>
+	<div class="mt-5 d-flex justify-content-center"><a class="btn btn-success w-50 " th:href="@{'/foto/newFoto'}" style="width: 10%;">Inserisci Nuova Foto</a></div>
+	<div class="mt-5 d-flex justify-content-center"><a class="btn btn-secondary w-50 " th:href="@{'/categorie'}" style="width: 10%;">Visualizza categorie</a></div>
 <div th:replace="~{fragments :: script}"></div>
 </body>
 </html>

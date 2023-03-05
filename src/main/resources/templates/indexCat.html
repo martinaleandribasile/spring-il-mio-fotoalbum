@@ -2,34 +2,28 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>Elenco Categorie</title>
+<title>Categorie</title>
 
-<link th:replace="~{fragment :: head}"></link>
+<link th:replace="~{fragments :: head}"></link>
 </head>
 <body>
 <div class="container">
-	<a class="btn btn-primary" th:href="@{/categorie/create}"><i class="fas fa-plus"></i>Nuova Categoria</a>
-	<table class="table">
+	<h1>Categorie</h1>
+	<table class="table mt-5">
 		<thead>
 			<tr>
-				<td>Id</td>
 				<td>Nome</td>	
 				<td></td>			
 			</tr>
 		</thead>
 		<tbody>
-			<tr th:each="data : ${categorie}">
-				<td>
-				<a th:text="${data.id}" th:href="@{'categorie/'+ ${data.id}}"></a>
-				</td>
-				<td th:text="${data.nome}"></td>
-				<td>
+			<tr class="d-flex justify-content-between" th:each="data : ${categorie}">
+				<td th:text="${data.categoria}"></td>
+				<td class="d-flex">
 					<form action="#" th:action="@{'/categorie/delete/{id}'(id=${data.id})}" method="post">
-					  <button class="btn btn-primary" type="submit" id="submitButton">
-					    <i class="fas fa-trash-alt"></i>
-					  </button>
+					  <button class="btn btn-danger" type="submit" id="submitButton">Cancella</button>
 					</form>
-					<a class="btn btn-primary px- mx-2" th:href="@{'/categorie/edit/{id}'(id=${data.id})}">Modifica</a>
+					<a class="btn btn-warning px-3 mx-2" th:href="@{'/categorie/edit/{id}'(id=${data.id})}">Modifica</a>
 				</td>
 				
 			</tr>
@@ -37,9 +31,11 @@
 		
 		
 	</table>
-	
-	<a class="btn btn-danger" th:href="@{/foto}"></i>Torna alla Home</a>
+	<div class="d-flex flex-column ">
+		<a class="btn btn-success w-50 mb-5" th:href="@{/categorie/create}">Nuova Categoria</a>
+		<a class="btn btn-secondary w-50" th:href="@{/foto}"></i>Torna alla Lista delle foto</a>
 	</div>
-	<script th:replace="~{fragment :: script}"></script>
+	</div>
+	<script th:replace="~{fragments :: script}"></script>
 </body>
 </html>

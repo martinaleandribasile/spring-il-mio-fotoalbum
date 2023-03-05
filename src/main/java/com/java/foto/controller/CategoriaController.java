@@ -4,7 +4,6 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,24 +25,24 @@ public class CategoriaController {
 	@Autowired
 	private CategoriaRepository catrep;
 	
-	@GetMapping()		// GET /categories
+	@GetMapping()
 	public String index(			
 			Model model) {	
-		List<Categoria> res = catrep.findAll(Sort.by("nome"));
+		List<Categoria> res = catrep.findAll();
 		model.addAttribute("categorie", res);
 		return "indexCat";
 	}
 
 	@GetMapping("/create")	
 	public String create(Model model) {
-		Categoria categoria =new Categoria();	//non esiste ancora sul DB
+		Categoria categoria =new Categoria();	
 
 		model.addAttribute("categoria", categoria);
 
 		return "createCat";
 	}
 
-	@PostMapping("/create")  // /categorie/create
+	@PostMapping("/create") 
 	public String store(
 		@Valid @ModelAttribute("categorie") Categoria formCategoria, 
 		BindingResult bindingResult,
@@ -58,7 +57,7 @@ public class CategoriaController {
 
 	}
 	
-	@GetMapping("/edit/{id}") //GESTISCE LE RICHIESTEDEL TIPO /FOTO/EDIT/ID
+	@GetMapping("/edit/{id}") 
 	public String edit(@PathVariable("id") Integer id,Model model ) {
 		
 		Categoria c;
@@ -71,9 +70,7 @@ public class CategoriaController {
 	
 	@PostMapping("/edit/{id}")
 	public String update(
-			@Valid @ModelAttribute Categoria formCategoria,
-			BindingResult bindingResult,
-			Model model) {
+			@PathVariable("id") Integer id,@Valid @ModelAttribute("foto") Categoria formCategoria, BindingResult bindingResult, Model model) {
 		if(bindingResult.hasErrors())
 			return "editCat";
 		

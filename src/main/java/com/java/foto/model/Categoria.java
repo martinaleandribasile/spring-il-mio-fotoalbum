@@ -13,7 +13,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 @Entity
 @Table
 public class Categoria {
@@ -22,7 +24,9 @@ public class Categoria {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@NotNull
+	@NotNull(message="categoria: campo obbligatorio")
+	@NotEmpty(message = "categoria: campo obbligatorio")
+	@Size(min=3, max=50, message="la categoria deve avere tra i 3 e i 50 caratteri")
 	private String categoria;
 	
 	@ManyToMany(mappedBy = "categoria")
