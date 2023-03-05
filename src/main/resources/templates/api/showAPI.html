@@ -36,6 +36,7 @@ dettaglio(id);
 function dettaglio(id) {
   axios.get(`http://localhost:8080/api/foto/${id}`)
     .then((res) => {
+		console.log(res.data)
       const foto = res.data;
       const photoContainer = document.querySelector('#dettaglio');
 
@@ -45,14 +46,21 @@ function dettaglio(id) {
         <div class="card-body">
           <h5 class="card-title">${foto.titolo}</h5>
           <p class="card-text">${foto.descrizione}</p>
-          <p class="card-text text-primary">Tag: ${foto.tag}</p>
+           <h6 class="card-title">Tag:</h6>
+          <p class="card-text">${foto.tag}</p>
+          <h6 class="card-title">Categorie:</h6>
+          <div class="card-text" id="catBox"></div>
           <div>
-            <a href="indexAPI.html" class="btn btn-outline-dark">Torna alla lista</a>
+            <a href="indexAPI.html" class="btn btn-outline-dark mt-5">Torna alla lista</a>
           </div>
         </div>
       </div>
     `;
       photoContainer.insertAdjacentHTML('beforeend', photoCard);
+      foto.categoria.forEach((cat)=>{
+		 const catBox = document.querySelector('#catBox');
+		 catBox.innerHTML=cat.categoria
+	})
     })
     .catch((err) => {
       console.error('Errore nella richiesta', err);
