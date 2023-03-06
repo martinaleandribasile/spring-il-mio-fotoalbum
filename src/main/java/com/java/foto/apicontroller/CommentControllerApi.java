@@ -28,7 +28,7 @@ public class CommentControllerApi {
 	private FotoRepository fotoRepository;
 	
 	@PostMapping("{id}")
-	public Comment create(@PathVariable("id") Integer id, @Valid @RequestBody Comment comment) {
+	public Comment create(@PathVariable("id") Integer id, @RequestBody Comment comment) {
 		Foto foto = fotoRepository.getReferenceById(id);
 		comment.setFoto(foto);
 		return commentRepository.save(comment);

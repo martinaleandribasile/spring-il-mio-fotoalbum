@@ -21,13 +21,13 @@
     </div>
     <div class="container-fluid">
 		<h2>Inserisci Commento</h2>
-		<form class="d-flex flex-column" method="post">
+		<div class="d-flex flex-column" method="post">
 			<label>Utente:</label>
-			<input name="utente" value="" placeholder="Inserisci nome utente..."/>
+			<input name="utente" id="utente" value="" placeholder="Inserisci nome utente..."/>
 			<label>Commento:</label>
-			<input name="text" value=""  placeholder="Inserisci commento...."/>
-			<button class="btn btn-success" id="commento" > Pubblica</button>
-		</form>
+			<input name="text" id="text" value=""  placeholder="Inserisci commento...."/>
+			<button class="btn btn-success" id="invioCommento" > Pubblica</button>
+		</div>
 	</div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"
         integrity="sha512-1/RvZTcCDEUjY/CypiMz+iqqtaoQfAITmNSJY17Myp4Ms5mdxPS5UV7iOfdZoxcGhzFbOm6sntTKJppjvuhg4g=="
@@ -38,25 +38,23 @@
 
 const urlParams = new URLSearchParams(window.location.search);
 const id = parseInt(urlParams.get('id'));
-
+const foto={}
 dettaglio(id);
-
-
 function dettaglio(id) {
   axios.get(`http://localhost:8080/api/foto/${id}`)
     .then((res) => {
 		console.log(res.data)
-      const foto = res.data;
+      this.foto = res.data;
       const photoContainer = document.querySelector('#dettaglio');
 
       const photoCard = `
       <div class="card">
-        <img src="${foto.url}" class="card-img-top" alt="${foto.titolo}">
+        <img src="${this.foto.url}" class="card-img-top" alt="${this.foto.titolo}">
         <div class="card-body">
-          <h5 class="card-title">${foto.titolo}</h5>
-          <p class="card-text">${foto.descrizione}</p>
+          <h5 class="card-title">${this.foto.titolo}</h5>
+          <p class="card-text">${this.foto.descrizione}</p>
            <h6 class="card-title">Tag:</h6>
-          <p class="card-text">${foto.tag}</p>
+          <p class="card-text">${this.foto.tag}</p>
           <h6 class="card-title">Categorie:</h6>
           <div class="card-text" id="catBox"></div>
           <h2 class="card-title mt-4 text-primary">Commenti:</h2>
@@ -68,11 +66,11 @@ function dettaglio(id) {
       </div>
     `;
       photoContainer.insertAdjacentHTML('beforeend', photoCard);
-      foto.categoria.forEach((cat)=>{
+      this.foto.categoria.forEach((cat)=>{
 		 const catBox = document.querySelector('#catBox');
 		 catBox.innerHTML=cat.categoria
 	})
-	  foto.comment.forEach((com)=>{
+	  this.foto.comment.forEach((com)=>{
 		 const catBox = document.querySelector('#comBox');
 		 comBox.innerHTML+= `
 		<div  style="border: 1px solid green" >
@@ -87,17 +85,23 @@ function dettaglio(id) {
     .catch((err) => {
       console.error('Errore nella richiesta', err);
       alert('Errore durante la richiesta!');
-    });
-    
-    
+    });  
 }
-const btn = document.getElementById('commento');
+
+
+const bottone = document.querySelector("#invioCommento");
+bottone.addEventListener("click", function(event){
+	addComment(id)
+});
+
+
 function addComment(id) {
-  const text = document.querySelector('#text').value;
-  const utente = document.querySelector('#utente').value;
-  axios.post(`http://localhost:8080/api/comment/${id}`,{
-    text: text,
-    utente:utente
+	console.log('/////click')
+  	const textInput = document.getElementById('text').value;
+  	const utenteInput = document.getElementById('utente').value;
+  	axios.post(`http://localhost:8080/api/comment/${id}`,{
+    text: textInput,
+    utente:utenteInput,
   }).then((res) => {
       console.log("then");
       window.location.reload(); 
@@ -107,8 +111,8 @@ function addComment(id) {
 
     });
 }
-btn.onclick = function(){addComment(id)};
-	</script>
+
+</script>
 </body>
 
 </html>
