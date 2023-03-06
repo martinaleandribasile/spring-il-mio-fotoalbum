@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import com.java.foto.model.Foto;
+
 import com.java.foto.repository.FotoRepository;
 
 @RestController
@@ -41,5 +43,5 @@ public class FotoControllerApi {
 		else
 			return new ResponseEntity<Foto>(HttpStatus.NOT_FOUND);
 	}
-
+	
 }

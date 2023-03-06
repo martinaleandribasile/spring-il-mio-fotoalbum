@@ -3,7 +3,7 @@ package com.java.foto.model;
 
 import java.util.List;
 
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,7 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import jakarta.validation.constraints.NotEmpty;
@@ -51,6 +51,12 @@ public class Foto {
 	@ManyToMany()
 	@JoinTable(name = "foto_categoria")
 	private List<Categoria> categoria;
+	@OneToMany(mappedBy = "foto", cascade = CascadeType.ALL)
+	private List<Comment> comment;
+
+	
+	
+	
 	public Integer getId() {
 		return id;
 	}
@@ -93,5 +99,12 @@ public class Foto {
 	public void setTag(String tag) {
 		this.tag = tag;
 	}
+	public List<Comment> getComment() {
+		return comment;
+	}
+	public void setComment(List<Comment> comment) {
+		this.comment = comment;
+	}
+
 	
 }

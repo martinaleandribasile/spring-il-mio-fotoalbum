@@ -19,7 +19,16 @@
         <h1>Dettaglio foto</h1>
         <div id="dettaglio"></div>
     </div>
-
+    <div class="container-fluid">
+		<h2>Inserisci Commento</h2>
+		<form class="d-flex flex-column" method="post">
+			<label>Utente:</label>
+			<input name="utente" value="" placeholder="Inserisci nome utente..."/>
+			<label>Commento:</label>
+			<input name="text" value=""  placeholder="Inserisci commento...."/>
+			<button class="btn btn-success" id="commento" > Pubblica</button>
+		</form>
+	</div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"
         integrity="sha512-1/RvZTcCDEUjY/CypiMz+iqqtaoQfAITmNSJY17Myp4Ms5mdxPS5UV7iOfdZoxcGhzFbOm6sntTKJppjvuhg4g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -50,6 +59,8 @@ function dettaglio(id) {
           <p class="card-text">${foto.tag}</p>
           <h6 class="card-title">Categorie:</h6>
           <div class="card-text" id="catBox"></div>
+          <h2 class="card-title mt-4 text-primary">Commenti:</h2>
+          <div class="card-text" id="comBox"></div>
           <div>
             <a href="indexAPI.html" class="btn btn-outline-dark mt-5">Torna alla lista</a>
           </div>
@@ -61,13 +72,42 @@ function dettaglio(id) {
 		 const catBox = document.querySelector('#catBox');
 		 catBox.innerHTML=cat.categoria
 	})
+	  foto.comment.forEach((com)=>{
+		 const catBox = document.querySelector('#comBox');
+		 comBox.innerHTML+= `
+		<div  style="border: 1px solid green" >
+		 <h6 class="card-title">Utente:  </h6>
+         <p class="card-text">${com.utente}</p>
+           <h6 class="card-title">Commento: </h6>
+          <p class="card-text">${com.text}</p>
+		</div>
+		 `
+	})
     })
     .catch((err) => {
       console.error('Errore nella richiesta', err);
       alert('Errore durante la richiesta!');
     });
+    
+    
 }
+const btn = document.getElementById('commento');
+function addComment(id) {
+  const text = document.querySelector('#text').value;
+  const utente = document.querySelector('#utente').value;
+  axios.post(`http://localhost:8080/api/comment/${id}`,{
+    text: text,
+    utente:utente
+  }).then((res) => {
+      console.log("then");
+      window.location.reload(); 
+    })
+    .catch((err) => {
+      console.error( err.response.data.errors);
 
+    });
+}
+btn.onclick = function(){addComment(id)};
 	</script>
 </body>
 

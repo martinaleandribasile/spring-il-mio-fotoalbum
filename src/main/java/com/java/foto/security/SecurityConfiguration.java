@@ -36,10 +36,11 @@ public class SecurityConfiguration {
 				// ACCESSO ALLA HOME: USER E ADMIN
 				.requestMatchers("/**").permitAll()
 
-				.and().formLogin().and().logout().and().exceptionHandling()
-
-				// VIEW HTML PERSONALIZZATA PER L'ACCESSO NEGATO
-				.accessDeniedPage("/access-denied.html");
+				.and().formLogin()
+				.and().logout()
+				.and().exceptionHandling()
+				.accessDeniedPage("/access-denied.html")
+				.and().csrf().disable();
 
 		return http.build();
 	}
